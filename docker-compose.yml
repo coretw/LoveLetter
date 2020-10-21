@@ -1,0 +1,39 @@
+#loverletter
+#local.loverletter.tw
+version: "3"
+
+networks:
+  backend:
+  frontend:
+
+services:
+
+  # web-server
+  web-server:
+    container_name: nginx
+    networks:
+      - frontend
+      - backend
+    image: nginx:1.17
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./docker/log/nginx:/var/log/nginx
+      - ./docker/nginx/conf:/etc/nginx/conf.d
+      - ./docker/ssl:/etc/ssl
+#      - ./:/var/www/html/loverletter
+
+  # node
+  node:
+    container_name: node
+    networks:
+      - frontend
+      - backend
+    restart: always
+    image: node:13
+    command: "node /var/www/html/index.js"
+    volumes:
+      - ./docker/log/node:/var/log/node
+      - ./docker/ssl:/etc/ssl
+      - ./:/var/www/html

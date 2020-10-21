@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh_TW">
+<head>
+    <script src="/js/socket.js"></script>
+    <script>
+        // web socket
+        var socket;
+        var domain = 'local.loverletter.tw';
+        socket = io(document.location.protocol + '//' + domain);
+        socket.on('checkSocket', function (data) {
+            console.log(data);
+        });
+    </script>
+</head>
+<body>
+哈樓!
+</body>
+</html>

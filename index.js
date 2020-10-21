@@ -3,18 +3,25 @@ const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-
-const web_port = 3000;
-const socket_port = 3001;
+const port = 8443;
 const log = require('simple-node-logger').createSimpleFileLogger('/var/log/node/node.log');
 
+server.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+})
 
-
+app.use('/js', express.static(__dirname + '/js'));
+app.use('/css', express.static(__dirname + '/css'));
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.sendFile(__dirname + '/index.html');
 })
 
-app.listen(web_port, () => {
-    console.log(`Example app listening at http://localhost:${web_port}`)
+
+io.on('connection', socket => {
+
+    console.log('A new user has joined the chat')
+
+    socket.emit('checkSocket', socket.id);
 })
+
